@@ -1,21 +1,26 @@
 from jaxtyping import Float
-from torch import Tensor
+from numpy import einsum
+from torch import Tensor, cat, inverse, ones, squeeze, unsqueeze, zeros
 
 
 def homogenize_points(
     points: Float[Tensor, "*batch dim"],
 ) -> Float[Tensor, "*batch dim+1"]:
     """Turn n-dimensional points into (n+1)-dimensional homogeneous points."""
-
-    raise NotImplementedError("This is your homework.")
+    one = ones((*points.shape[:-1], points.shape[-1] + 1))
+    one[..., :-1] = points
+    return one
+    # return cat((points, ones((points.shape[0], 1))))
 
 
 def homogenize_vectors(
     points: Float[Tensor, "*batch dim"],
 ) -> Float[Tensor, "*batch dim+1"]:
     """Turn n-dimensional vectors into (n+1)-dimensional homogeneous vectors."""
-
-    raise NotImplementedError("This is your homework.")
+    zero = zeros((*points.shape[:-1], points.shape[-1] + 1))
+    zero[..., :-1] = points
+    return zero
+    # return cat((points, zeros((1))))
 
 
 def transform_rigid(
@@ -23,8 +28,8 @@ def transform_rigid(
     transform: Float[Tensor, "*#batch 4 4"],
 ) -> Float[Tensor, "*batch 4"]:
     """Apply a rigid-body transform to homogeneous points or vectors."""
-
-    raise NotImplementedError("This is your homework.")
+    return squeeze(transform @ unsqueeze(xyz, -1), axis=-1)
+    # return einsum(transform, xyz, "... i j, ... j -> ... i")
 
 
 def transform_world2cam(
@@ -34,8 +39,8 @@ def transform_world2cam(
     """Transform points or vectors from homogeneous 3D world coordinates to homogeneous
     3D camera coordinates.
     """
-
-    raise NotImplementedError("This is your homework.")
+    return squeeze(inverse(cam2world) @ unsqueeze(xyz, -1), axis=-1)
+    # return einsum(inverse(cam2world), xyz, "... i j, ... j -> ... i")
 
 
 def transform_cam2world(
@@ -45,8 +50,8 @@ def transform_cam2world(
     """Transform points or vectors from homogeneous 3D camera coordinates to homogeneous
     3D world coordinates.
     """
-
-    raise NotImplementedError("This is your homework.")
+    return squeeze(cam2world @ unsqueeze(xyz, -1), axis=-1)
+    # return einsum(cam2world, xyz, "... i j, ... j -> ... i")
 
 
 def project(
@@ -54,5 +59,6 @@ def project(
     intrinsics: Float[Tensor, "*#batch 3 3"],
 ) -> Float[Tensor, "*batch 2"]:
     """Project homogenized 3D points in camera coordinates to pixel coordinates."""
-
-    raise NotImplementedError("This is your homework.")
+    xyz = xyz[..., :-1]
+    uvw = squeeze(intrinsics @ unsqueeze(xyz, -1), axis=-1)
+    return uvw[..., :-1] / unsqueeze(uvw[..., -1], axis=-1)

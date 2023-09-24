@@ -25,10 +25,10 @@ You can now open the project directory in VS Code. Within VS Code, open the comm
 
 For the best editing experience, install the following VS Code extensions:
 
-* Python (`ms-python.python`)
-* Pylance (`ms-python.vscode-pylance`)
-* Black Formatter (`ms-python.black-formatter`)
-* Ruff (`charliermarsh.ruff`)
+- Python (`ms-python.python`)
+- Pylance (`ms-python.vscode-pylance`)
+- Black Formatter (`ms-python.black-formatter`)
+- Ruff (`charliermarsh.ruff`)
 
 ## Project Components
 
@@ -119,8 +119,6 @@ All functions in `geometry.py` that have multiple parameters use `*#batch`, mean
 
 </details>
 
-
-
 #### Running Tests
 
 We've included some tests that you can use as a sanity check. These tests only test basic functionality—it's up to you to ensure that your code can handle more complex use cases (e.g. batch dimensions, corner cases). Run these tests from the project root directory as follows:
@@ -141,8 +139,8 @@ Each student will receive a unique dataset with a randomly generated format. Per
 
 Each dataset contains 32 images and a `metadata.json` file. The `metadata.json` file contains two keys:
 
-* `intrinsics`: These intrinsics use the normalized format described in part 1.
-* `extrinsics`: These extrinsics use a randomized format described below.
+- `intrinsics`: These intrinsics use the normalized format described in part 1.
+- `extrinsics`: These extrinsics use a randomized format described below.
 
 The extrinsics are either in camera-to-world format or world-to-camera format. The axes have been randomized, meaning that the camera look, up, and right vectors could be any of $(+x, -x, +y, -y, +z, -z)$. Note that this could yield a left-handed coordinate system! Here's an example of Blender's (right-handed) camera coordinate system:
 
@@ -152,10 +150,10 @@ The extrinsics are either in camera-to-world format or world-to-camera format. T
 
 The cameras are arranged as described below. Use this information to help you figure out your camera format.
 
-* The camera origins are always exactly 2 units from the origin.
-* The world up vector is $+y$, and all cameras have $y \geq 0$.
-* All camera look vectors point directly at the origin.
-* All camera up vectors are pointed "up" in the world. In other words, the dot product between any camera up vector and $+y$ is positive.
+- The camera origins are always exactly 2 units from the origin.
+- The world up vector is $+y$, and all cameras have $y \geq 0$.
+- All camera look vectors point directly at the origin.
+- All camera up vectors are pointed "up" in the world. In other words, the dot product between any camera up vector and $+y$ is positive.
 
 Hint: How might one build a rotation matrix to convert between camera coordinate systems?
 
@@ -177,6 +175,6 @@ Before submitting, ensure that your code has been formatted using Black and lint
 
 Each homework will have a bonus problem that we will use to allocate A+ grades. **These problems are completely optional.** For this homework, the bonus problem is as follows:
 
-Can you devise a way to automatically solve *everyone's* puzzles? Create a script that converts a folder of dataset `.zip` files to a folder of dataset `.zip` files in standardized (converted) format. If you attempt this problem, make sure to include your script's location and your general approach in your answer to `explanation_of_problem_solving_process` in `puzzle.py`.
+Can you devise a way to automatically solve _everyone's_ puzzles? Create a script that converts a folder of dataset `.zip` files to a folder of dataset `.zip` files in standardized (converted) format. If you attempt this problem, make sure to include your script's location and your general approach in your answer to `explanation_of_problem_solving_process` in `puzzle.py`.
 
 Also, if you manage to do this, please don't spoil everyone else's puzzles! :)
