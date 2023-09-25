@@ -1,6 +1,5 @@
 from jaxtyping import Float
-from numpy import einsum
-from torch import Tensor, cat, inverse, ones, squeeze, unsqueeze, zeros
+from torch import Tensor, inverse, ones, squeeze, unsqueeze, zeros
 
 
 def homogenize_points(
@@ -10,7 +9,6 @@ def homogenize_points(
     one = ones((*points.shape[:-1], points.shape[-1] + 1))
     one[..., :-1] = points
     return one
-    # return cat((points, ones((points.shape[0], 1))))
 
 
 def homogenize_vectors(
@@ -20,7 +18,6 @@ def homogenize_vectors(
     zero = zeros((*points.shape[:-1], points.shape[-1] + 1))
     zero[..., :-1] = points
     return zero
-    # return cat((points, zeros((1))))
 
 
 def transform_rigid(
@@ -29,7 +26,6 @@ def transform_rigid(
 ) -> Float[Tensor, "*batch 4"]:
     """Apply a rigid-body transform to homogeneous points or vectors."""
     return squeeze(transform @ unsqueeze(xyz, -1), axis=-1)
-    # return einsum(transform, xyz, "... i j, ... j -> ... i")
 
 
 def transform_world2cam(
@@ -39,7 +35,8 @@ def transform_world2cam(
     """Transform points or vectors from homogeneous 3D world coordinates to homogeneous
     3D camera coordinates.
     """
-    return squeeze(inverse(cam2world) @ unsqueeze(xyz, -1), axis=-1)
+    # print((inverse(cam2world) @ unsqueeze(xyz, -1)).dtype)
+    return squeeze(inverse(cam2world).double() @ unsqueeze(xyz, -1).double(), axis=-1)
     # return einsum(inverse(cam2world), xyz, "... i j, ... j -> ... i")
 
 

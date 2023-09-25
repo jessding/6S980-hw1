@@ -1,13 +1,10 @@
 from jaxtyping import Float, install_import_hook
-from torch import Tensor, ones, squeeze, unsqueeze
+from torch import Tensor, ones, unsqueeze
 
 with install_import_hook(("src",), ("beartype", "beartype")):
     from src.geometry import (
         homogenize_points,
-        homogenize_vectors,
         project,
-        transform_cam2world,
-        transform_rigid,
         transform_world2cam,
     )
 
