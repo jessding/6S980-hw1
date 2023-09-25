@@ -36,7 +36,9 @@ def transform_world2cam(
     3D camera coordinates.
     """
     # print((inverse(cam2world) @ unsqueeze(xyz, -1)).dtype)
-    return squeeze(inverse(cam2world).double() @ unsqueeze(xyz, -1).double(), axis=-1)
+    return squeeze(
+        inverse(cam2world).double() @ unsqueeze(xyz, -1).double(), axis=-1
+    ).float()
     # return einsum(inverse(cam2world), xyz, "... i j, ... j -> ... i")
 
 
@@ -56,6 +58,8 @@ def project(
     intrinsics: Float[Tensor, "*#batch 3 3"],
 ) -> Float[Tensor, "*batch 2"]:
     """Project homogenized 3D points in camera coordinates to pixel coordinates."""
+    xyz = xyz.double()
+    intrinsics = intrinsics.double()
     xyz = xyz[..., :-1]
     uvw = squeeze(intrinsics @ unsqueeze(xyz, -1), axis=-1)
-    return uvw[..., :-1] / unsqueeze(uvw[..., -1], axis=-1)
+    return (uvw[..., :-1] / unsqueeze(uvw[..., -1], axis=-1)).float()
